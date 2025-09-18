@@ -3,7 +3,8 @@ import sys, pathlib
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
 
 import pytest
-from student_tracker.project import status_kelulusan
+from belajar_python.project01_kelulusan import status_kelulusan
+
 
 def test_lulus_normal():
     assert status_kelulusan(6.5, 3.0, False) == "Lulus"
