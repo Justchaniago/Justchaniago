@@ -122,6 +122,18 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+# --- RUTE RAHASIA UNTUK INISIASI DATABASE (JANGAN DIHAPUS) ---
+@app.route('/init_db_rahasia')
+def init_db():
+    try:
+        # Pancing pembuatan tabel
+        with app.app_context():
+            db.create_all()
+            seed_data()
+        return "Database berhasil dibuat & User Admin ditambahkan! Silakan kembali ke Home."
+    except Exception as e:
+        return f"Error: {str(e)}"
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
