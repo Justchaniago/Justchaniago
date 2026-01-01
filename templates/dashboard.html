@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Fahrul</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .dash-container { max-width: 900px; margin: 50px auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        
+        /* Form Styling */
+        .form-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
+        input, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f5f5f7; font-weight: 600; }
+        .btn-delete { color: red; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .btn-submit { background: #27c93f; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="dash-container">
+        <div class="header">
+            <h1>👋 Halo, {{ user.username }}</h1>
+            <a href="{{ url_for('logout') }}" style="color: red; text-decoration: none; font-weight: bold;">Logout</a>
+        </div>
+
+        <div class="form-card">
+            <h3>Tambah Project Baru</h3>
+            <form action="/add_project" method="POST">
+                <div class="form-group">
+                    <label>Judul Project</label>
+                    <input type="text" name="title" placeholder="Contoh: Sales Dashboard 2025" required>
+                </div>
+                <div class="form-group">
+                    <label>Kategori</label>
+                    <input type="text" name="category" placeholder="Contoh: Python / Management" required>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi Singkat</label>
+                    <textarea name="description" rows="3" placeholder="Jelaskan projectnya..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Link (Opsional)</label>
+                    <input type="text" name="link" placeholder="#">
+                </div>
+                <button type="submit" class="btn-submit">+ Simpan Project</button>
+            </form>
+        </div>
+
+        <h3>List Project Aktif</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Judul</th>
+                    <th>Kategori</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for project in projects %}
+                <tr>
+                    <td>{{ project.title }}</td>
+                    <td><span style="background: #eee; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem;">{{ project.category }}</span></td>
+                    <td>
+                        <a href="/delete/{{ project.id }}" class="btn-delete" onclick="return confirm('Yakin mau hapus?')">Hapus 🗑️</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <p style="margin-top: 30px; text-align: center;"><a href="{{ url_for('home') }}">Lihat Website Utama →</a></p>
+    </div>
+
+</body>
+</html>

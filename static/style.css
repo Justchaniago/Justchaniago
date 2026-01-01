@@ -1,0 +1,226 @@
+/* --- RESET & BASIC --- */
+:root {
+    --bg-color: #fcfbf8; /* Krem sangat muda (khas kertas seni) */
+    --text-main: #2d2d34;
+    --text-sec: #787885;
+    --accent: #5e6ad2; /* Ungu kebiruan Sean Halpin */
+    --card-bg: #ffffff;
+    --cursor-color: #5e6ad2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* MENYEMBUNYIKAN KURSOR ASLI */ }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+a { cursor: none; } /* Pastikan link juga tidak memunculkan kursor tangan */
+
+/* --- CUSTOM CURSOR STYLES --- */
+.cursor-dot {
+    width: 8px; height: 8px; background-color: var(--text-main);
+    position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+    border-radius: 50%; z-index: 9999; pointer-events: none;
+}
+
+.cursor-outline {
+    width: 40px; height: 40px;
+    border: 2px solid rgba(94, 106, 210, 0.5);
+    position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+    border-radius: 50%; z-index: 9998; pointer-events: none;
+    transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+/* Kursor saat hover elemen penting */
+.cursor-outline.hovered {
+    width: 60px; height: 60px;
+    background-color: rgba(94, 106, 210, 0.1);
+    border-color: transparent;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center;
+    position: relative; z-index: 100;
+}
+.logo { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.5rem; color: var(--accent); }
+.nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
+.nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; transition: color 0.3s; }
+
+.btn-contact {
+    background: #eef0f5; padding: 0.8rem 1.5rem; border-radius: 50px;
+    color: var(--accent) !important; font-weight: 600;
+}
+
+/* --- HERO SECTION --- */
+.hero {
+    min-height: 80vh; display: flex; align-items: center; justify-content: center;
+    padding: 0 5%;
+}
+.hero-content {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;
+    max-width: 1100px; width: 100%;
+}
+.badge {
+    background: #e6e8fd; color: var(--accent); padding: 0.5rem 1rem;
+    border-radius: 20px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+    display: inline-block; margin-bottom: 1.5rem;
+}
+.hero h1 {
+    font-family: 'Fredoka', sans-serif; font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem;
+    color: var(--text-main);
+}
+.hero p { font-size: 1.2rem; color: var(--text-sec); line-height: 1.6; max-width: 90%; }
+
+/* Visual Blob (Pengganti Gambar Sementara) */
+.hero-visual { display: flex; justify-content: center; }
+.avatar-blob {
+    width: 350px; height: 350px;
+    background: linear-gradient(180deg, #dce4ff 0%, #f4f0ff 100%);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset 0 0 40px rgba(255,255,255,0.8);
+    /* Animasi Morphing (Berubah bentuk) */
+    animation: morph 8s ease-in-out infinite; 
+}
+
+@keyframes morph {
+    0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+    100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+}
+
+/* --- BENTO GRID CARDS --- */
+.container { padding: 4rem 5%; max-width: 1200px; margin: 0 auto; }
+.grid-wrapper {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+}
+
+.card {
+    background: white; border-radius: 32px; padding: 2.5rem;
+    box-shadow: 0 10px 40px rgba(200, 200, 210, 0.15); /* Bayangan soft berwarna */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efek Bouncy saat hover */
+    display: flex; flex-direction: column; justify-content: space-between; height: 320px;
+    border: 1px solid #f0f0f5;
+}
+
+.card:hover { transform: translateY(-10px) scale(1.02); }
+
+.card-icon { font-size: 2rem; margin-bottom: 1rem; }
+.category { font-size: 0.75rem; font-weight: 700; color: #b0b0c0; text-transform: uppercase; letter-spacing: 1px; }
+.card h3 { font-family: 'Fredoka', sans-serif; font-size: 1.6rem; margin: 0.5rem 0; color: var(--text-main); }
+.card p { color: var(--text-sec); font-size: 0.95rem; line-height: 1.5; }
+
+.card-footer { margin-top: auto; padding-top: 1.5rem; }
+.card-link {
+    text-decoration: none; color: var(--text-main); font-weight: 600;
+    border-bottom: 2px solid #e0e0e0; padding-bottom: 2px; transition: 0.3s;
+}
+.card-link:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .hero-content { grid-template-columns: 1fr; text-align: center; }
+    .hero-visual { display: none; } /* Sembunyikan visual di HP biar rapi */
+    .cursor-dot, .cursor-outline { display: none; } /* Matikan kursor kustom di HP (Touchscreen) */
+    * { cursor: auto; } /* Kembalikan kursor normal di HP */
+}
+
+/* --- 3D INTERACTIVE TERMINAL --- */
+
+/* Area pembungkus agar efek 3D bekerja */
+.tilt-container {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d; /* Wajib untuk 3D */
+}
+
+/* Dekorasi Bulat Melayang di Belakang */
+.floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: -1; /* Di belakang kartu */
+    opacity: 0.6;
+    animation: float 6s infinite ease-in-out;
+}
+.shape-1 {
+    width: 200px; height: 200px;
+    background: #c4cdfd;
+    top: -20px; right: -20px;
+}
+.shape-2 {
+    width: 150px; height: 150px;
+    background: #ffe0e0;
+    bottom: -30px; left: -30px;
+    animation-delay: 3s;
+}
+
+/* Kartu Kaca (Glass Card) */
+.glass-card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.65); /* Putih transparan */
+    backdrop-filter: blur(15px); /* Efek Blur Kaca */
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 
+        0 20px 50px rgba(0,0,0,0.1), /* Bayangan lembut */
+        0 0 0 1px rgba(255,255,255,0.5) inset; /* Garis dalam kilap */
+    padding: 1.5rem;
+    transition: transform 0.1s ease-out; /* Agar gerakan mouse smooth */
+    transform-style: preserve-3d;
+}
+
+/* Header Kartu (Tombol Mac) */
+.card-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 10px;
+}
+.window-btn { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+.window-title { 
+    margin-left: auto; font-size: 0.8rem; color: #888; font-family: monospace; 
+}
+
+/* Isi Kode */
+.card-body {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #333;
+    font-weight: 600;
+}
+
+/* Syntax Highlighting (Warna-warni Kode) */
+.kwd { color: #d54e53; } /* Keyword (def, class) */
+.cls { color: #e78c45; } /* Class Name */
+.func { color: #7aa6da; } /* Function */
+.str { color: #b9ca4a; } /* String */
+.arg { color: #e7c547; } /* Argument */
+
+.indent { margin-left: 20px; }
+.double-indent { margin-left: 40px; }
+
+/* Kursor Ketik Berkedip */
+.cursor-blink {
+    display: inline-block; width: 8px; height: 15px; background: #333;
+    animation: blink 1s infinite; vertical-align: middle; margin-left: 5px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Responsive HP */
+@media (max-width: 768px) {
+    .tilt-container { width: 100%; height: auto; transform: none !important; }
+    .glass-card { transform: none !important; }
+}
