@@ -36,7 +36,7 @@ class Project(db.Model):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -126,11 +126,14 @@ def logout():
 @app.route('/init_db_rahasia')
 def init_db():
     try:
-        # Pancing pembuatan tabel
         with app.app_context():
+            # HAPUS DB LAMA (YANG KEKECILAN)
+            db.drop_all()
+            
+            # BUAT BARU (DENGAN UKURAN 255)
             db.create_all()
             seed_data()
-        return "Database berhasil dibuat & User Admin ditambahkan! Silakan kembali ke Home."
+        return "Database berhasil di-reset & User Admin dibuat ulang!"
     except Exception as e:
         return f"Error: {str(e)}"
 
