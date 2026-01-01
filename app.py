@@ -2,20 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-import os
+import os  # <--- JANGAN SAMPAI LUPA INI!
 
 app = Flask(__name__)
 
-# KUNCI RAHASIA (Wajib ada untuk fitur login)
-app.config['SECRET_KEY'] = 'kunci-rahasia-fahrul-123' 
-
-# Konfigurasi Database
-# --- BAGIAN IMPORT (Pastikan os ada) ---
-import os
-# ... import lainnya biarkan ...
-
-# --- HAPUS CONFIG DB LAMA, GANTI DENGAN INI ---
-# Cek apakah ada link database online? Kalau gak ada, pakai sqlite lokal.
+# --- KONFIGURASI DATABASE VERCEL ---
 database_url = os.environ.get('DATABASE_URL')
 
 if database_url and database_url.startswith("postgres://"):
@@ -23,21 +14,10 @@ if database_url and database_url.startswith("postgres://"):
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url or 'sqlite:///portfolio.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'kunci-rahasia-default')
 
-# --- TAMBAHKAN ROUTE KHUSUS UNTUK INISIASI DATABASE ---
-# Karena di Vercel kita gak bisa jalanin perintah terminal manual,
-# kita buat tombol rahasia untuk bikin tabel database pertama kali.
-
-@app.route('/init_db_rahasia')
-def init_db():
-    try:
-        db.create_all()
-        seed_data()
-        return "Database berhasil dibuat & User Admin ditambahkan!"
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-# ... SISA KODE KE BAWAH BIARKAN SAMA ...
+db = SQLAlchemy(app)
+# ... kode selanjutnya ...
 # Konfigurasi Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
