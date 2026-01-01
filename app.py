@@ -3,8 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import os  # <--- JANGAN SAMPAI LUPA INI!
+import cloudinary
+import cloudinary.uploader
 
 app = Flask(__name__)
+
+# --- CONFIG CLOUDINARY ---
+cloudinary.config(
+    cloud_name = os.environ.get('CLOUD_NAME'),
+    api_key = os.environ.get('CLOUD_API_KEY'),
+    api_secret = os.environ.get('CLOUD_API_SECRET')
+)
+
+# ... config database biarkan di bawahnya ...
 
 # --- KONFIGURASI DATABASE VERCEL ---
 database_url = os.environ.get('DATABASE_URL')
@@ -31,6 +42,7 @@ class Project(db.Model):
     category = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(300), nullable=False)
     link = db.Column(db.String(200))
+    image_url = db.Column(db.String(500), nullable=True)
 
 # 2. Tabel User (Admin)
 class User(UserMixin, db.Model):
@@ -100,8 +112,26 @@ def add_project():
     category = request.form.get('category')
     description = request.form.get('description')
     link = request.form.get('link')
+    image_file = request.files.get('image') # Ambil file dari form
 
-    new_project = Project(title=title, category=category, description=description, link=link)
+    image_url = "https://placehold.co/600x400" # Gambar default kalau user gak upload
+
+    if image_file:
+        try:
+            # Upload ke Cloudinary
+            upload_result = cloudinary.uploader.upload(image_file)
+            image_url = upload_result['secure_url'] # Ambil link gambar dari Cloudinary
+        except Exception as e:
+            print(f"Error upload: {e}")
+            flash('Gagal upload gambar, pakai gambar default.', 'danger')
+
+    new_project = Project(
+        title=title, 
+        category=category, 
+        description=description, 
+        link=link,
+        image_url=image_url # Simpan linknya di database
+    )
     db.session.add(new_project)
     db.session.commit()
     return redirect(url_for('dashboard'))
