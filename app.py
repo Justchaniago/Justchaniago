@@ -72,7 +72,7 @@ def seed_data():
 def home():
     projects = Project.query.all()
     profile = {
-        'name': 'Fahrul Roji Chaniago',
+        'name': 'Ferry Rusly Chaniago',
         'role': 'Store Leader & Aspiring Developer',
         'bio': 'Bridging Operations & Tech. Mengubah data menjadi keputusan bisnis.',
         'linkedin': 'https://www.linkedin.com/in/fr-chaniago/'
