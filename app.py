@@ -164,6 +164,27 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+# --- ROUTE RAHASIA UNTUK SETUP DB DI VERCEL ---
+@app.route('/init-db')
+def init_db():
+    try:
+        # Coba buat semua tabel
+        db.create_all()
+        
+        # Cek apakah tabel Experience sudah ada, kalau kosong isi dummy
+        if not Experience.query.first():
+            dummy = [
+                Experience(role="Store Leader", company="Gong Cha Indonesia", period="Jan 2025 - Present", desc="Leading daily operations at Tunjungan Plaza 6. Spearheaded sales growth initiative."),
+                Experience(role="Restaurant Manager", company="Pak 'D' Group", period="Aug 2024 - Oct 2024", desc="Managed staffing, inventory, and sales performance."),
+                Experience(role="Senior Tea Barista", company="KOI Thé Indonesia", period="Apr 2018 - Apr 2023", desc="Supervised bar operations and trained new baristas.")
+            ]
+            db.session.add_all(dummy)
+            db.session.commit()
+            return "Database initialized successfully! Tables created & Dummy data added."
+        
+        return "Database already exists. Tables are ready."
+    except Exception as e:
+        return f"Error initializing database: {str(e)}"
 
 # Script init DB untuk Local (Uncomment jika pertama kali run di local)
 if __name__ == '__main__':
