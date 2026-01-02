@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Lost in Space</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}?v=2">  
+</head>
+<body>
+
+    <div class="aurora-bg">
+        <div class="aurora-light light-1"></div>
+        <div class="aurora-light light-2"></div>
+        <div class="aurora-light light-3"></div>
+        <div class="aurora-overlay"></div>
+    </div>
+
+    <div class="error-container fade-in">
+        <div class="glass-box">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-msg">Lost in the <span class="highlight">Void.</span></h2>
+            <p class="error-desc">
+                The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
+            </p>
+            <a href="/" class="btn-home" id="warp-button">
+                Back to Safety 🚀
+            </a>
+        </div>
+    </div>
+
+    <div id="warp-overlay" class="warp-overlay">
+        <div class="hyperspace-flash"></div>
+    </div>
+
+    <div class="cursor-glow"></div>
+    <script>
+        // CURSOR
+        const cursor = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            requestAnimationFrame(() => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+        });
+
+        // TIME WARP LOGIC
+        document.addEventListener('DOMContentLoaded', () => {
+            const warpOverlay = document.getElementById('warp-overlay');
+            const warpBtn = document.getElementById('warp-button');
+            const isMobile = window.innerWidth < 768;
+            const numStars = isMobile ? 30 : 80;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('warp-star');
+                const angle = Math.random() * 360;
+                star.style.setProperty('--angle', `${angle}deg`);
+                star.style.setProperty('--delay', `${Math.random() * 0.5}s`);
+                star.style.setProperty('--duration', `${0.5 + Math.random() * 0.5}s`);
+                warpOverlay.appendChild(star);
+            }
+
+            warpBtn.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                warpOverlay.classList.add('engaging');
+                document.body.style.overflow = 'hidden'; 
+                setTimeout(() => { window.location.href = '/'; }, 1200);
+            });
+        });
+    </script>
+</body>
+</html>

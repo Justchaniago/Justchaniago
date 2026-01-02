@@ -1,116 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard Fahrul</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Operations Center</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        /* --- FIX KURSOR & STYLE --- */
-        * { cursor: auto !important; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f5f5f7;
-            margin: 0;
-        }
-
-        .dash-container { max-width: 900px; margin: 50px auto; padding: 20px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        
-        /* Form Styling */
-        .form-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); margin-bottom: 40px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9rem; }
-        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        
-        /* Style Input File */
-        input[type="file"] { padding: 10px 0; }
-        
-        /* Table Styling */
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f5f5f7; font-weight: 600; }
-        .btn-delete { color: #ff3b30; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-        .btn-submit { background: #27c93f; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
-        .btn-submit:hover { background: #22b137; }
-        
-        h1 { color: #1d1d1f; }
-        h3 { color: #1d1d1f; margin-bottom: 15px; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}?v=2">
 </head>
 <body>
-
-    <div class="dash-container">
-        <div class="header">
-            <h1>👋 Halo, {{ user.username }}</h1>
-            <a href="{{ url_for('logout') }}" style="color: #ff3b30; text-decoration: none; font-weight: bold; border: 1px solid #ff3b30; padding: 8px 15px; border-radius: 20px;">Logout</a>
-        </div>
-
-        <div class="form-card">
-            <h3>Tambah Project Baru</h3>
-            
-            <form action="/add_project" method="POST" enctype="multipart/form-data">
-                
-                <div class="form-group">
-                    <label>Judul Project</label>
-                    <input type="text" name="title" placeholder="Contoh: Sales Dashboard 2025" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Kategori</label>
-                    <input type="text" name="category" placeholder="Contoh: Python / Management" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Deskripsi Singkat</label>
-                    <textarea name="description" rows="3" placeholder="Jelaskan projectnya..." required></textarea>
-                </div>
-                
-                <div class="form-group" style="background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px dashed #ccc;">
-                    <label>📸 Upload Cover Image</label>
-                    <input type="file" name="image" accept="image/*">
-                    <div style="font-size: 0.8rem; color: #666; margin-top: 5px;">Format: JPG/PNG. Jika kosong, akan pakai gambar default.</div>
-                </div>
-
-                <div class="form-group">
-                    <label>Link (Opsional)</label>
-                    <input type="text" name="link" placeholder="#">
-                </div>
-                
-                <br>
-                <button type="submit" class="btn-submit">+ Simpan Project</button>
-            </form>
-        </div>
-
-        <h3>List Project Aktif</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Cover</th>
-                    <th>Judul</th>
-                    <th>Kategori</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for project in projects %}
-                <tr>
-                    <td>
-                        <img src="{{ project.image_url }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px;">
-                    </td>
-                    <td>{{ project.title }}</td>
-                    <td><span style="background: #eee; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 500;">{{ project.category }}</span></td>
-                    <td>
-                        <a href="/delete/{{ project.id }}" class="btn-delete" onclick="return confirm('Yakin mau hapus project ini?')">Hapus 🗑️</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-        <p style="margin-top: 40px; text-align: center;">
-            <a href="{{ url_for('home') }}" style="text-decoration: none; color: #0071e3; font-weight: 600;">Lihat Website Utama →</a>
-        </p>
+    <div class="aurora-bg">
+        <div class="aurora-light light-1"></div>
+        <div class="aurora-light light-2"></div>
+        <div class="aurora-light light-3"></div>
+        <div class="aurora-overlay"></div>
     </div>
 
+    <div class="dashboard-layout fade-in">
+        
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-header">
+                <h3>Chaniago<span class="highlight">.Dev</span></h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#overview" class="nav-item active"><span class="icon">📊</span> Overview</a>
+                <a href="#experiences" class="nav-item"><span class="icon">💼</span> Experience</a>
+                <a href="#messages" class="nav-item"><span class="icon">📩</span> Inbox <span class="badge-count">{{ unread_count }}</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <span class="user-name">{{ user }}</span>
+                    <span class="user-role">Super Admin</span>
+                </div>
+                <a href="/logout" class="btn-logout">Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert {{ category }}" style="margin-bottom: 20px;">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <header class="top-bar">
+                <h1>Overview</h1>
+                <span class="date-display">Live Data</span>
+            </header>
+
+            <div class="stats-grid" id="overview">
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon emerald">👁️</div>
+                    <div class="stat-info">
+                        <h3>Total Views</h3>
+                        <p class="stat-num">{{ views }}</p> 
+                        <span class="stat-change up">Keep growing!</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon purple">📩</div>
+                    <div class="stat-info">
+                        <h3>Messages</h3>
+                        <p class="stat-num">{{ messages|length }}</p>
+                        <span class="stat-change">Total received</span>
+                    </div>
+                </div>
+                <div class="stat-card glass-panel">
+                    <div class="stat-icon blue">💼</div>
+                    <div class="stat-info">
+                        <h3>Experience</h3>
+                        <p class="stat-num">{{ experiences|length }}</p>
+                        <span class="stat-change">Roles listed</span>
+                    </div>
+                </div>
+            </div>
+<div class="content-section" id="experiences">
+                <div class="section-header-flex">
+                    <h2>Manage Experience</h2>
+                </div>
+                
+                <div class="glass-panel form-card">
+                    <div class="form-header">
+                        <span class="icon-plus">+</span>
+                        <h3>Add New Role</h3>
+                    </div>
+                    
+                    <form action="/experience/add" method="POST" class="admin-form">
+                        <div class="form-grid">
+                            <div class="input-wrapper">
+                                <label>Role / Position</label>
+                                <input type="text" name="role" placeholder="e.g. Store Manager" required class="glass-input-premium">
+                            </div>
+                            <div class="input-wrapper">
+                                <label>Company</label>
+                                <input type="text" name="company" placeholder="e.g. Gong Cha" required class="glass-input-premium">
+                            </div>
+                            <div class="input-wrapper">
+                                <label>Period</label>
+                                <input type="text" name="period" placeholder="e.g. 2024 - Present" required class="glass-input-premium">
+                            </div>
+                        </div>
+                        
+                        <div class="input-wrapper full-width">
+                            <label>Job Description</label>
+                            <textarea name="desc" placeholder="Describe your responsibilities and achievements..." required class="glass-input-premium" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary btn-save">
+                                Save Experience
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Company</th>
+                                <th>Period</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exp in experiences %}
+                            <tr>
+                                <td><span style="font-weight: 600; color: #fff;">{{ exp.role }}</span></td>
+                                <td>{{ exp.company }}</td>
+                                <td><span class="year-badge">{{ exp.period }}</span></td>
+                                <td>
+                                    <a href="/experience/delete/{{ exp.id }}" class="btn-icon-delete" onclick="return confirm('Delete this role?')">
+                                        🗑️
+                                    </a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">
+                                    No experiences yet. Start building your legacy above.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+
+            <div class="content-section" id="messages" style="margin-top: 50px;">
+                <div class="section-header-flex" style="margin-bottom: 20px; align-items: center; display: flex; gap: 15px;">
+                    <h2>Inbox Messages</h2>
+                    <span class="badge-count-lg">{{ messages|length }}</span>
+                </div>
+
+                <div class="glass-panel table-card">
+                    <table class="premium-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%;">Sender</th>
+                                <th>Message Content</th>
+                                <th style="width: 15%; text-align: right;">Received</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for msg in messages %}
+                            <tr>
+                                <td>
+                                    <div class="sender-info">
+                                        <div class="avatar-circle">{{ msg.name[0] | upper }}</div>
+                                        <div class="sender-text">
+                                            <span class="sender-name">{{ msg.name }}</span>
+                                            <span class="sender-email">{{ msg.email }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <td class="message-cell">
+                                    <p class="message-preview">{{ msg.content }}</p>
+                                </td>
+                                
+                                <td style="text-align: right;">
+                                    <span class="date-badge">{{ msg.timestamp.strftime('%d %b, %H:%M') }}</span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" class="empty-state">
+                                    <div class="empty-icon">📭</div>
+                                    <p>No new messages. Your inbox is clean!</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+
+        </main>
+    </div>
+    
+    <div class="cursor-glow"></div>
+    <script>
+        const cursor = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+    </script>
 </body>
 </html>
