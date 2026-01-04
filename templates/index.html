@@ -46,11 +46,11 @@
     <div class="main-content">
         
         <nav class="navbar-pill">
-            <a href="#home" class="nav-link active">Home</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#services" class="nav-link">Capabilities</a>
-            <a href="#tech-stack" class="nav-link">Tech Stack</a>
-            <a href="#contact" class="nav-link">Contact</a>
+            <a href="#home" class="nav-link active">{{ texts.navbar_home }}</a>
+            <a href="#about" class="nav-link">{{ texts.navbar_about }}</a>
+            <a href="#services" class="nav-link">{{ texts.navbar_capabilities }}</a>
+            <a href="#tech-stack" class="nav-link">{{ texts.navbar_tech_stack }}</a>
+            <a href="#contact" class="nav-link">{{ texts.navbar_contact }}</a>
             <div class="lang-switch">
                 <a href="{{ url_for('set_language', lang='en') }}" class="lang-link {% if lang == 'en' %}active-lang{% endif %}">EN</a>
                 <a href="{{ url_for('set_language', lang='id') }}" class="lang-link {% if lang == 'id' %}active-lang{% endif %}">ID</a>
@@ -59,10 +59,9 @@
 
         <header id="home" class="hero">
             <div class="hero-content">
-                <h1 class="fade-in">Hi. I'm Chaniago.</h1>
-                <h1 class="fade-in delay-1">A <span class="highlight">Developer.</span></h1>
+                <h1 class="fade-in">{{ texts.hero_hi }}</h1>
+                <h1 class="fade-in delay-1">{{ texts.hero_role | safe }}</h1>
                 <p class="hero-desc fade-in delay-2">{{ texts.hero_desc | safe }}</p>
-                
             </div>
         </header>
 
@@ -72,13 +71,9 @@
                     <img src="{{ url_for('static', filename='me.jpeg') }}" alt="Chaniago" class="arch-photo" onerror="this.src='https://placehold.co/400x500/1e293b/34d399?text=Ferry';">
                 </div>
                 <div class="about-text">
-                    <h2>I'm a <span class="highlight">Software Engineer</span> based in East Java.</h2>
-                    <p>
-                        Over the past 8 years, I've worn many hats in the F&B industry—from brewing tea at <b>KOI Thé</b> to leading operations at <b>Gong Cha</b>. I learned that managing a store is like coding: one small error can crash the system.
-                    </p>
-                    <p>
-                        These days, I've traded my apron for a code editor (VS Code), building efficient apps with <b>Python & Flask</b>.
-                    </p>
+                    <h2>{{ texts.about_title | safe }}</h2>
+                    <p>{{ texts.about_p1 | safe }}</p>
+                    <p>{{ texts.about_p2 | safe }}</p>
                 </div>
             </div>
         </section>
@@ -86,7 +81,7 @@
         <section id="services" class="container">
             <div class="section-header center-aligned reveal">
                 <h2>{{ texts.capabilities }}</h2>
-                <p style="color: #94a3b8; max-width: 700px; margin: 10px auto;">What I build — focused, practical projects and technical skills.</p>
+                <p style="color: #94a3b8; max-width: 700px; margin: 10px auto;">{{ texts.capabilities_desc }}</p>
             </div>
 
             <div class="services-grid reveal">
@@ -104,7 +99,7 @@
                     </div>
                 </div>
                 {% else %}
-                <p style="text-align:center; color:#64748b; padding:30px;">No capabilities added yet.</p>
+                <p style="text-align:center; color:#64748b; padding:30px;">{{ texts.no_capabilities }}</p>
                 {% endfor %}
             </div>
         </section>
@@ -112,7 +107,7 @@
         <section id="tech-stack" class="container">
             <div class="section-header center-aligned reveal">
                 <h2>{{ texts.tech_stack }}</h2>
-                <p style="color: #94a3b8; max-width: 700px; margin: 10px auto;">Tools and frameworks I use regularly.</p>
+                <p style="color: #94a3b8; max-width: 700px; margin: 10px auto;">{{ texts.tech_stack_desc }}</p>
             </div>
             <div class="tech-stack-row reveal">
                 <div class="tech-chip">
@@ -175,7 +170,7 @@
         <section id="portfolio" class="container">
             <div class="section-header center-aligned reveal">
                 <h2>{{ texts.project_showcase }}</h2>
-                <p style="color: #94a3b8; max-width: 800px; margin: 10px auto;">Selected projects demonstrating practical results and outcomes.</p>
+                <p style="color: #94a3b8; max-width: 800px; margin: 10px auto;">{{ texts.project_showcase_desc }}</p>
             </div>
 
             <div class="portfolio-grid reveal">
@@ -190,7 +185,7 @@
                     </div>
                 </a>
                 {% else %}
-                <p style="text-align:center; color:#64748b; padding:30px;">No projects yet — add some from the dashboard.</p>
+                <p style="text-align:center; color:#64748b; padding:30px;">{{ texts.no_projects }}</p>
                 {% endfor %}
             </div>
         </section>

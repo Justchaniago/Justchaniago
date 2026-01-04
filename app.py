@@ -74,10 +74,25 @@ class Portfolio(db.Model):
 # --- SIMPLE TRANSLATIONS ---
 TRANSLATIONS = {
     'en': {
+        'navbar_home': 'Home',
+        'navbar_about': 'About',
+        'navbar_capabilities': 'Capabilities',
+        'navbar_tech_stack': 'Tech Stack',
+        'navbar_contact': 'Contact',
+        'hero_hi': "Hi. I'm Chaniago.",
+        'hero_role': 'A <span class="highlight">Developer.</span>',
         'hero_desc': 'I build practical web apps and tools that simplify operations and deliver measurable results.<br>Portfolio of projects, operational automation, and production-ready code.',
+        'about_title': "I'm a <span class=\"highlight\">Software Engineer</span> based in East Java.",
+        'about_p1': "Over the past 8 years, I've worn many hats in the F&B industry—from brewing tea at <b>KOI Thé</b> to leading operations at <b>Gong Cha</b>. I learned that managing a store is like coding: one small error can crash the system.",
+        'about_p2': "These days, I've traded my apron for a code editor (VS Code), building efficient apps with <b>Python & Flask</b>.",
         'capabilities': 'Capabilities',
+        'capabilities_desc': 'What I build — focused, practical projects and technical skills.',
         'tech_stack': 'Tech Stack',
+        'tech_stack_desc': 'Tools and frameworks I use regularly.',
         'project_showcase': 'Project Showcase',
+        'project_showcase_desc': 'Selected projects demonstrating practical results and outcomes.',
+        'no_capabilities': 'No capabilities added yet.',
+        'no_projects': 'No projects yet — add some from the dashboard.',
         'contact_title': "Let's Collaborate",
         'contact_sub': "Have a project in mind or just want to discuss tea and code? My inbox is open.",
         'send_message': 'Send a message',
@@ -88,10 +103,25 @@ TRANSLATIONS = {
         'btn_send': 'Send Message'
     },
     'id': {
+        'navbar_home': 'Beranda',
+        'navbar_about': 'Tentang',
+        'navbar_capabilities': 'Kemampuan',
+        'navbar_tech_stack': 'Teknologi',
+        'navbar_contact': 'Kontak',
+        'hero_hi': "Halo. Saya Chaniago.",
+        'hero_role': 'Seorang <span class="highlight">Developer.</span>',
         'hero_desc': 'Saya membangun aplikasi web praktis dan alat yang menyederhanakan operasional dan memberikan hasil yang terukur.<br>Portofolio proyek, otomasi operasional, dan kode siap produksi.',
+        'about_title': 'Saya seorang <span class=\"highlight\">Software Engineer</span> di Jawa Timur.',
+        'about_p1': 'Selama 8 tahun terakhir, saya telah menjalani berbagai peran di industri F&B—dari meracik teh di <b>KOI Thé</b> hingga memimpin operasional di <b>Gong Cha</b>. Saya belajar bahwa mengelola toko itu seperti ngoding: satu kesalahan kecil bisa membuat sistem crash.',
+        'about_p2': 'Sekarang, saya menukar apron dengan editor kode (VS Code), membangun aplikasi efisien dengan <b>Python & Flask</b>.',
         'capabilities': 'Kemampuan',
-        'tech_stack': 'Tech Stack',
+        'capabilities_desc': 'Apa yang saya bangun — proyek fokus, praktis, dan skill teknis.',
+        'tech_stack': 'Teknologi',
+        'tech_stack_desc': 'Tools dan framework yang sering saya gunakan.',
         'project_showcase': 'Proyek Unggulan',
+        'project_showcase_desc': 'Proyek pilihan yang menunjukkan hasil nyata dan berdampak.',
+        'no_capabilities': 'Belum ada kemampuan yang ditambahkan.',
+        'no_projects': 'Belum ada proyek — tambahkan dari dashboard.',
         'contact_title': 'Mari Berkolaborasi',
         'contact_sub': 'Punya proyek atau ingin bicara tentang teh dan kode? Kotak masuk saya terbuka.',
         'send_message': 'Kirim pesan',
@@ -141,7 +171,7 @@ def home():
         if cookie_lang and cookie_lang in TRANSLATIONS:
             session['lang'] = cookie_lang
         else:
-            return redirect(url_for('choose_language'))
+            session['lang'] = 'en'  # Set default language
     # Counter Views (Error Handling biar ga crash kalau DB belum ready)
     try:
         stats = Analytics.query.first()
@@ -163,8 +193,7 @@ def home():
 
 
 @app.route('/choose-language')
-def choose_language():
-    return render_template('choose_language.html')
+
 
 
 @app.route('/set-language/<lang>')
@@ -344,5 +373,5 @@ def init_db():
 
 # Script init DB untuk Local (Uncomment jika pertama kali run di local)
 if __name__ == '__main__':
-     create_db()
-     app.run(debug=True)
+    create_db()
+    app.run(debug=True, port=5001)
