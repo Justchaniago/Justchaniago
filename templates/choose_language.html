@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choose Language</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="lang-chooser">
+    <div class="lang-box glass-panel">
+      <h2>Choose your language / Pilih bahasa</h2>
+      <p style="color:#94a3b8">Select a language to continue — pilih bahasa untuk melanjutkan.</p>
+      <div style="display:flex; gap:12px; margin-top:18px;">
+        <a class="btn-primary" href="{{ url_for('set_language', lang='en') }}">English</a>
+        <a class="btn-primary" href="{{ url_for('set_language', lang='id') }}">Bahasa Indonesia</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

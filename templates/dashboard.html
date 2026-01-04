@@ -18,13 +18,14 @@
 
     <div class="dashboard-layout fade-in">
         
-        <aside class="sidebar glass-panel">
+            <aside class="sidebar glass-panel">
             <div class="sidebar-header">
                 <h3>Chaniago<span class="highlight">.Dev</span></h3>
             </div>
             <nav class="sidebar-nav">
                 <a href="#overview" class="nav-item active"><span class="icon">📊</span> Overview</a>
-                <a href="#experiences" class="nav-item"><span class="icon">💼</span> Experience</a>
+                <a href="#portfolios" class="nav-item"><span class="icon">🖼️</span> Portfolios</a>
+                <a href="#services" class="nav-item"><span class="icon">🛠️</span> Services</a>
                 <a href="#messages" class="nav-item"><span class="icon">📩</span> Inbox <span class="badge-count">{{ unread_count }}</span></a>
             </nav>
             <div class="sidebar-footer">
@@ -69,50 +70,49 @@
                     </div>
                 </div>
                 <div class="stat-card glass-panel">
-                    <div class="stat-icon blue">💼</div>
+                    <div class="stat-icon blue">🖼️</div>
                     <div class="stat-info">
-                        <h3>Experience</h3>
-                        <p class="stat-num">{{ experiences|length }}</p>
-                        <span class="stat-change">Roles listed</span>
+                        <h3>Portfolios</h3>
+                        <p class="stat-num">{{ portfolios|length }}</p>
+                        <span class="stat-change">Items showcased</span>
                     </div>
                 </div>
             </div>
-<div class="content-section" id="experiences">
+
+            <div class="content-section" id="portfolios" style="margin-top: 30px;">
                 <div class="section-header-flex">
-                    <h2>Manage Experience</h2>
+                    <h2>Manage Portfolios</h2>
                 </div>
-                
+
                 <div class="glass-panel form-card">
                     <div class="form-header">
                         <span class="icon-plus">+</span>
-                        <h3>Add New Role</h3>
+                        <h3>Add New Portfolio Item</h3>
                     </div>
-                    
-                    <form action="/experience/add" method="POST" class="admin-form">
+
+                    <form action="/portfolio/add" method="POST" class="admin-form">
                         <div class="form-grid">
                             <div class="input-wrapper">
-                                <label>Role / Position</label>
-                                <input type="text" name="role" placeholder="e.g. Store Manager" required class="glass-input-premium">
+                                <label>Title</label>
+                                <input type="text" name="title" placeholder="Project title" required class="glass-input-premium">
                             </div>
                             <div class="input-wrapper">
-                                <label>Company</label>
-                                <input type="text" name="company" placeholder="e.g. Gong Cha" required class="glass-input-premium">
+                                <label>Category</label>
+                                <input type="text" name="category" placeholder="e.g. Web, Design" class="glass-input-premium">
                             </div>
                             <div class="input-wrapper">
-                                <label>Period</label>
-                                <input type="text" name="period" placeholder="e.g. 2024 - Present" required class="glass-input-premium">
+                                <label>Image URL</label>
+                                <input type="text" name="image_url" placeholder="/static/images/.. or remote url" class="glass-input-premium">
                             </div>
                         </div>
-                        
+
                         <div class="input-wrapper full-width">
-                            <label>Job Description</label>
-                            <textarea name="desc" placeholder="Describe your responsibilities and achievements..." required class="glass-input-premium" rows="3"></textarea>
+                            <label>Link URL</label>
+                            <input type="text" name="link_url" placeholder="https://" class="glass-input-premium">
                         </div>
-                        
+
                         <div class="form-actions">
-                            <button type="submit" class="btn-primary btn-save">
-                                Save Experience
-                            </button>
+                            <button type="submit" class="btn-primary btn-save">Save Portfolio</button>
                         </div>
                     </form>
                 </div>
@@ -121,36 +121,97 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Role</th>
-                                <th>Company</th>
-                                <th>Period</th>
+                                <th>Preview</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Link</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for exp in experiences %}
+                            {% for pf in portfolios %}
                             <tr>
-                                <td><span style="font-weight: 600; color: #fff;">{{ exp.role }}</span></td>
-                                <td>{{ exp.company }}</td>
-                                <td><span class="year-badge">{{ exp.period }}</span></td>
                                 <td>
-                                    <a href="/experience/delete/{{ exp.id }}" class="btn-icon-delete" onclick="return confirm('Delete this role?')">
-                                        🗑️
-                                    </a>
+                                    <img src="{{ pf.image_url or url_for('static', filename='images/placeholder.png') }}" alt="{{ pf.title }}" style="width:64px;height:48px;object-fit:cover;border-radius:6px;" onerror="this.src='https://placehold.co/160x120/0f172a/34d399?text=Img'">
+                                </td>
+                                <td><strong style="color:#fff;">{{ pf.title }}</strong></td>
+                                <td>{{ pf.category }}</td>
+                                <td><a href="{{ pf.link_url }}" target="_blank">Open</a></td>
+                                <td>
+                                    <a href="/portfolio/delete/{{ pf.id }}" class="btn-icon-delete" onclick="return confirm('Delete this portfolio item?')">🗑️</a>
                                 </td>
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" style="text-align: center; color: #64748b; padding: 30px;">
-                                    No experiences yet. Start building your legacy above.
-                                </td>
+                                <td colspan="5" style="text-align:center; padding:30px; color:#64748b;">No portfolio items yet.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
-            </div>
+
+            <div class="content-section" id="services" style="margin-top: 30px;">
+                <div class="section-header-flex">
+                    <h2>Manage Services</h2>
+                </div>
+
+                <div class="glass-panel form-card">
+                    <div class="form-header">
+                        <span class="icon-plus">+</span>
+                        <h3>Add New Service</h3>
+                    </div>
+
+                    <form action="/service/add" method="POST" class="admin-form">
+                        <div class="form-grid">
+                            <div class="input-wrapper">
+                                <label>Title</label>
+                                <input type="text" name="title" placeholder="Service title / Capability" required class="glass-input-premium">
+                            </div>
+                            <div class="input-wrapper">
+                                <label>Icon</label>
+                                <input type="text" name="icon" placeholder="e.g. bi-code or ⚙️" class="glass-input-premium">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary btn-save">Save Service</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container glass-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Title</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for svc in services %}
+                            <tr>
+                                <td>
+                                    {% if svc.icon and svc.icon.startswith('bi-') %}
+                                    <i class="bi {{ svc.icon }}" style="font-size:1.2rem;"></i>
+                                    {% else %}
+                                    {{ svc.icon or '⚙️' }}
+                                    {% endif %}
+                                </td>
+                                <td><strong style="color:#fff;">{{ svc.title }}</strong></td>
+                                <td>
+                                    <a href="/service/delete/{{ svc.id }}" class="btn-icon-delete" onclick="return confirm('Delete this service?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="3" style="text-align:center; padding:30px; color:#64748b;">No services yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
             <div class="content-section" id="messages" style="margin-top: 50px;">
                 <div class="section-header-flex" style="margin-bottom: 20px; align-items: center; display: flex; gap: 15px;">
@@ -199,7 +260,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
             </div>
 
         </main>
