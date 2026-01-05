@@ -57,6 +57,18 @@
             </div>
         </nav>
 
+        <!-- Dynamic Island Language Switcher for Mobile -->
+        <div class="lang-switch-mobile">
+            <div class="lang-island" onclick="this.classList.toggle('expanded'); document.querySelector('.lang-options').classList.toggle('show')">
+                <span>{{ '🇺🇸 EN' if lang == 'en' else '🇮🇩 ID' }}</span>
+                <span class="lang-island-icon">▼</span>
+            </div>
+            <div class="lang-options">
+                <a href="{{ url_for('set_language', lang='en') }}" class="lang-link {% if lang == 'en' %}active-lang{% endif %}">🇺🇸 EN</a>
+                <a href="{{ url_for('set_language', lang='id') }}" class="lang-link {% if lang == 'id' %}active-lang{% endif %}">🇮🇩 ID</a>
+            </div>
+        </div>
+
         <header id="home" class="hero">
             <div class="hero-content">
                 <h1 class="fade-in">{{ texts.hero_hi }}</h1>
