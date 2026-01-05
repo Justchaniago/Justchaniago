@@ -77,14 +77,14 @@ TRANSLATIONS = {
         'navbar_home': 'Home',
         'navbar_about': 'About',
         'navbar_capabilities': 'Capabilities',
-        'navbar_tech_stack': 'Tech Stack',
+        'navbar_projects': 'Projects',
         'navbar_contact': 'Contact',
         'hero_hi': "Hi. I'm Chaniago.",
         'hero_role': 'A <span class="highlight">Developer.</span>',
         'hero_desc': 'I build practical web apps and tools that simplify operations and deliver measurable results.<br>Portfolio of projects, operational automation, and production-ready code.',
-        'about_title': "I'm a <span class=\"highlight\">Software Engineer</span> based in East Java.",
-        'about_p1': "Over the past 8 years, I've worn many hats in the F&B industry—from brewing tea at <b>KOI Thé</b> to leading operations at <b>Gong Cha</b>. I learned that managing a store is like coding: one small error can crash the system.",
-        'about_p2': "These days, I've traded my apron for a code editor (VS Code), building efficient apps with <b>Python & Flask</b>.",
+        'about_title': "I'm a <span class=\"highlight\">Software Engineer</span> who builds affordable digital solutions.",
+        'about_p1': "I believe that going digital shouldn't cost a fortune. My mission is to help businesses establish their online presence with professional-grade web applications at accessible, under-market rates.",
+        'about_p2': "I leverage efficient code (Python & Flask) to cut unnecessary costs, delivering premium results so you can grow without the financial burden.",
         'capabilities': 'Capabilities',
         'capabilities_desc': 'What I build — focused, practical projects and technical skills.',
         'tech_stack': 'Tech Stack',
@@ -106,14 +106,14 @@ TRANSLATIONS = {
         'navbar_home': 'Beranda',
         'navbar_about': 'Tentang',
         'navbar_capabilities': 'Kemampuan',
-        'navbar_tech_stack': 'Teknologi',
+        'navbar_projects': 'Proyek',
         'navbar_contact': 'Kontak',
         'hero_hi': "Halo. Saya Chaniago.",
         'hero_role': 'Seorang <span class="highlight">Developer.</span>',
         'hero_desc': 'Saya membangun aplikasi web praktis dan alat yang menyederhanakan operasional dan memberikan hasil yang terukur.<br>Portofolio proyek, otomasi operasional, dan kode siap produksi.',
-        'about_title': 'Saya seorang <span class=\"highlight\">Software Engineer</span> di Jawa Timur.',
-        'about_p1': 'Selama 8 tahun terakhir, saya telah menjalani berbagai peran di industri F&B—dari meracik teh di <b>KOI Thé</b> hingga memimpin operasional di <b>Gong Cha</b>. Saya belajar bahwa mengelola toko itu seperti ngoding: satu kesalahan kecil bisa membuat sistem crash.',
-        'about_p2': 'Sekarang, saya menukar apron dengan editor kode (VS Code), membangun aplikasi efisien dengan <b>Python & Flask</b>.',
+        'about_title': 'Saya seorang <span class=\"highlight\">Software Engineer</span> yang membangun solusi digital terjangkau.',
+        'about_p1': 'Saya percaya bahwa digitalisasi tidak harus mahal. Misi saya adalah membantu bisnis membangun kehadiran online mereka dengan aplikasi web berkualitas profesional di harga yang terjangkau dan di bawah pasaran.',
+        'about_p2': 'Saya memanfaatkan kode yang efisien (Python & Flask) untuk memangkas biaya yang tidak perlu, memberikan hasil premium sehingga Anda dapat berkembang tanpa beban finansial.',
         'capabilities': 'Kemampuan',
         'capabilities_desc': 'Apa yang saya bangun — proyek fokus, praktis, dan skill teknis.',
         'tech_stack': 'Teknologi',
@@ -159,6 +159,19 @@ def create_db():
                 Service(title="Consultation & Strategy", icon="bi-clipboard-check")
             ]
             db.session.add_all(services_dummy)
+            db.session.commit()
+        
+        # Seed Portfolio if empty
+        if not Portfolio.query.first():
+            portfolios_dummy = [
+                Portfolio(
+                    title="Senja Coffee E-Commerce",
+                    category="Full-Stack Web App",
+                    image_url="/static/images/Homepage_coffe_senja.png",
+                    link_url="https://senja-coffee-demo.vercel.app"
+                )
+            ]
+            db.session.add_all(portfolios_dummy)
             db.session.commit()
 
 # --- ROUTES ---
@@ -358,9 +371,12 @@ def init_db():
 
             if not Portfolio.query.first():
                 portfolios_dummy = [
-                    Portfolio(title="Personal Website", category="Web App", image_url="/static/images/portfolio1.jpg", link_url="https://example.com"),
-                    Portfolio(title="Brand Identity", category="Design", image_url="/static/images/portfolio2.jpg", link_url="https://example.com"),
-                    Portfolio(title="Landing Page", category="Web", image_url="/static/images/portfolio3.jpg", link_url="https://example.com")
+                    Portfolio(
+                        title="Senja Coffee E-Commerce",
+                        category="Full-Stack Web App",
+                        image_url="/static/images/Homepage_coffe_senja.png",
+                        link_url="https://senja-coffee-demo.vercel.app"
+                    )
                 ]
                 db.session.add_all(portfolios_dummy)
 

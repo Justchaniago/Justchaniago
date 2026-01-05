@@ -365,9 +365,30 @@ body::before {
 .tech-chip .logo-img img { width:100%; height:100%; object-fit:contain; display:block; }
 .tech-chip .tech-name { color:#e6eef8; font-weight:700; font-size:0.95rem; }
 
+/* Compact Tech Badge for About Section */
+.tech-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(16, 185, 129, 0.08));
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    border-radius: 20px;
+    color: #10b981;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+.tech-badge:hover {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(16, 185, 129, 0.12));
+    border-color: rgba(52, 211, 153, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 211, 153, 0.2);
+}
+
 @media (max-width: 700px) {
     .tech-chip { padding: 8px 10px; gap:8px; }
     .tech-chip .logo { width:34px; height:34px; font-size:0.85rem; }
+    .tech-badge { padding: 5px 12px; font-size: 0.8rem; }
 }
 
 /* PORTFOLIO GRID */

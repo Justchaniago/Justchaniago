@@ -49,7 +49,7 @@
             <a href="#home" class="nav-link active">{{ texts.navbar_home }}</a>
             <a href="#about" class="nav-link">{{ texts.navbar_about }}</a>
             <a href="#services" class="nav-link">{{ texts.navbar_capabilities }}</a>
-            <a href="#tech-stack" class="nav-link">{{ texts.navbar_tech_stack }}</a>
+            <a href="#portfolio" class="nav-link">{{ texts.navbar_projects }}</a>
             <a href="#contact" class="nav-link">{{ texts.navbar_contact }}</a>
             <div class="lang-switch">
                 <a href="{{ url_for('set_language', lang='en') }}" class="lang-link {% if lang == 'en' %}active-lang{% endif %}">EN</a>
@@ -86,6 +86,21 @@
                     <h2>{{ texts.about_title | safe }}</h2>
                     <p>{{ texts.about_p1 | safe }}</p>
                     <p>{{ texts.about_p2 | safe }}</p>
+                    
+                    <div style="margin-top: 24px;">
+                        <h3 style="font-size: 0.95rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Tech I Work With</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">JavaScript</span>
+                            <span class="tech-badge">React</span>
+                            <span class="tech-badge">PostgreSQL</span>
+                            <span class="tech-badge">Docker</span>
+                            <span class="tech-badge">Git</span>
+                            <span class="tech-badge">AWS</span>
+                            <span class="tech-badge">Linux</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -116,7 +131,7 @@
             </div>
         </section>
 
-        <section id="tech-stack" class="container">
+        <section id="tech-stack" class="container" style="display: none;">
             <div class="section-header center-aligned reveal">
                 <h2>{{ texts.tech_stack }}</h2>
                 <p style="color: #94a3b8; max-width: 700px; margin: 10px auto;">{{ texts.tech_stack_desc }}</p>
@@ -329,14 +344,26 @@
                 else navbar.classList.remove('scrolled');
 
                 let current = '';
-                const offset = 250; 
+                const offset = 150;
+                
                 sections.forEach(section => {
-                    if (window.scrollY >= (section.offsetTop - offset)) current = section.getAttribute('id');
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    const scrollPos = window.scrollY + offset;
+                    
+                    if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
+                        current = section.getAttribute('id');
+                    }
                 });
-                if (window.scrollY < 100) current = 'home';
+                
+                if (window.scrollY < 200) current = 'home';
+                
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    if (current && link.getAttribute('href').includes(current)) link.classList.add('active');
+                    const href = link.getAttribute('href');
+                    if (current && href === '#' + current) {
+                        link.classList.add('active');
+                    }
                 });
             }
             window.addEventListener('scroll', updateNav);
