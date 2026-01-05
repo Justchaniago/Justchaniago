@@ -269,7 +269,123 @@ def capability_detail(slug):
     
     return render_template('capability_detail.html', capability=capability, texts=texts, lang=lang)
 
-
+@app.route('/init-database-secret-route-2026')
+def init_database():
+    """
+    One-time route to initialize/migrate database in production
+    Visit this route once after deployment to seed capabilities
+    """
+    try:
+        # Create all tables
+        db.create_all()
+        
+        # Check and migrate existing services
+        services = Service.query.all()
+        needs_migration = False
+        
+        for svc in services:
+            if not hasattr(svc, 'slug') or svc.slug is None:
+                needs_migration = True
+                break
+        
+        if needs_migration:
+            # Delete old services without slug
+            Service.query.delete()
+            db.session.commit()
+        
+        # Add new services if empty
+        if Service.query.count() == 0:
+            new_services = [
+                Service(
+                    title="Website Development",
+                    icon="bi-laptop",
+                    slug="website-development",
+                    description="Building fast, responsive, and scalable web applications tailored to your business needs.",
+                    details="""<h3>Full-Stack Web Development</h3>
+                    <p>I create modern web applications using Python, Flask, React, and PostgreSQL. From concept to deployment, I handle the entire development lifecycle.</p>
+                    <h4>What I Offer:</h4>
+                    <ul>
+                        <li><strong>Custom Web Applications</strong> - Tailored solutions for your unique business requirements</li>
+                        <li><strong>E-Commerce Platforms</strong> - Complete online stores with payment integration</li>
+                        <li><strong>API Development</strong> - RESTful APIs for mobile apps and third-party integrations</li>
+                        <li><strong>Database Design</strong> - Efficient and scalable database architecture</li>
+                        <li><strong>Cloud Deployment</strong> - Hosting on AWS, Vercel, or your preferred platform</li>
+                    </ul>
+                    <h4>Technologies:</h4>
+                    <p>Python • Flask • JavaScript • React • PostgreSQL • Docker • AWS • Git</p>"""
+                ),
+                Service(
+                    title="Branding & Design",
+                    icon="bi-palette",
+                    slug="branding-design",
+                    description="Creating cohesive visual identities that make your brand memorable and professional.",
+                    details="""<h3>Brand Identity & UI/UX Design</h3>
+                    <p>I design clean, modern interfaces that prioritize user experience while reflecting your brand's personality.</p>
+                    <h4>What I Offer:</h4>
+                    <ul>
+                        <li><strong>Logo Design</strong> - Unique and memorable brand marks</li>
+                        <li><strong>UI/UX Design</strong> - User-centered interface design</li>
+                        <li><strong>Responsive Design</strong> - Mobile-first approach for all devices</li>
+                        <li><strong>Design Systems</strong> - Consistent components and style guides</li>
+                        <li><strong>Prototyping</strong> - Interactive mockups before development</li>
+                    </ul>
+                    <h4>Tools:</h4>
+                    <p>Figma • Adobe XD • Photoshop • Illustrator</p>"""
+                ),
+                Service(
+                    title="Consultation & Strategy",
+                    icon="bi-clipboard-check",
+                    slug="consultation-strategy",
+                    description="Strategic planning and technical consultation to help you make informed decisions about your digital presence.",
+                    details="""<h3>Technical Consultation & Digital Strategy</h3>
+                    <p>Not sure where to start? I help businesses understand their technical needs and create actionable roadmaps.</p>
+                    <h4>What I Offer:</h4>
+                    <ul>
+                        <li><strong>Tech Stack Selection</strong> - Choosing the right tools for your project</li>
+                        <li><strong>Project Planning</strong> - Breaking down complex projects into phases</li>
+                        <li><strong>Cost Analysis</strong> - Budget-friendly solutions without compromising quality</li>
+                        <li><strong>Performance Audit</strong> - Reviewing existing systems for improvements</li>
+                        <li><strong>Training & Support</strong> - Ongoing guidance for your team</li>
+                    </ul>
+                    <h4>Approach:</h4>
+                    <p>Practical advice • Cost-effective solutions • Long-term thinking</p>"""
+                )
+            ]
+            db.session.add_all(new_services)
+            db.session.commit()
+            
+        # Initialize Analytics if needed
+        if not Analytics.query.first():
+            analytics = Analytics(views=0)
+            db.session.add(analytics)
+            db.session.commit()
+        
+        return f"""
+        <html>
+        <body style="font-family: Arial; padding: 40px; background: #0f172a; color: #fff;">
+            <h1 style="color: #34d399;">✅ Database Initialized Successfully!</h1>
+            <p>Capabilities: {Service.query.count()}</p>
+            <p>Portfolios: {Portfolio.query.count()}</p>
+            <p>Experiences: {Experience.query.count()}</p>
+            <br>
+            <p><a href="/" style="color: #34d399;">Go to Homepage</a></p>
+            <p style="color: #94a3b8; margin-top: 40px; font-size: 0.9rem;">
+                Note: You can delete this route after running it once for security.
+            </p>
+        </body>
+        </html>
+        """
+    except Exception as e:
+        return f"""
+        <html>
+        <body style="font-family: Arial; padding: 40px; background: #0f172a; color: #fff;">
+            <h1 style="color: #ef4444;">❌ Error Initializing Database</h1>
+            <p>{str(e)}</p>
+            <br>
+            <p><a href="/" style="color: #34d399;">Go to Homepage</a></p>
+        </body>
+        </html>
+        """, 500
 
 @app.route('/choose-language')
 
