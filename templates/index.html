@@ -80,25 +80,24 @@
         <section id="about" class="container">
             <div class="about-grid reveal">
                 <div class="about-image-wrapper">
-                    <img src="{{ url_for('static', filename='me.jpeg') }}" alt="Chaniago" class="arch-photo" onerror="this.src='https://placehold.co/400x500/1e293b/34d399?text=Ferry';">
+                    <img src="{{ url_for('static', filename='me.jpeg') }}" alt="Chaniago" class="arch-photo" loading="lazy" onerror="this.src='https://placehold.co/400x500/1e293b/34d399?text=Ferry';">
                 </div>
                 <div class="about-text">
                     <h2>{{ texts.about_title | safe }}</h2>
                     <p>{{ texts.about_p1 | safe }}</p>
                     <p>{{ texts.about_p2 | safe }}</p>
                     
-                    <div style="margin-top: 24px;">
-                        <h3 style="font-size: 0.95rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Tech I Work With</h3>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">Flask</span>
-                            <span class="tech-badge">JavaScript</span>
-                            <span class="tech-badge">React</span>
-                            <span class="tech-badge">PostgreSQL</span>
-                            <span class="tech-badge">Docker</span>
-                            <span class="tech-badge">Git</span>
-                            <span class="tech-badge">AWS</span>
-                            <span class="tech-badge">Linux</span>
+                    <div style="margin-top: 32px;">
+                        <h3 style="font-size: 0.95rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;">Tech I Work With</h3>
+                        <div class="tech-marquee-wrapper">
+                            <div class="tech-marquee">
+                                <div class="marquee-content">
+                                    PYTHON • FLASK • JAVASCRIPT • REACT • POSTGRESQL • DOCKER • GIT • AWS • LINUX • VERCEL • 
+                                </div>
+                                <div class="marquee-content" aria-hidden="true">
+                                    PYTHON • FLASK • JAVASCRIPT • REACT • POSTGRESQL • DOCKER • GIT • AWS • LINUX • VERCEL • 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,7 +112,7 @@
 
             <div class="services-grid reveal">
                 {% for svc in services %}
-                <div class="service-card glass-panel">
+                <a href="{{ url_for('capability_detail', slug=svc.slug) }}" class="service-card glass-panel" style="text-decoration: none; color: inherit; display: block;">
                     <div class="service-top" style="justify-content: center;">
                         {% if svc.icon and svc.icon.startswith('bi-') %}
                         <i class="service-icon bi {{ svc.icon }}" aria-hidden="true"></i>
@@ -123,8 +122,16 @@
                     </div>
                     <div class="service-body" style="text-align: center;">
                         <h3>{{ svc.title }}</h3>
+                        {% if svc.description %}
+                        <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 12px; line-height: 1.6;">{{ svc.description[:100] }}{% if svc.description|length > 100 %}...{% endif %}</p>
+                        {% endif %}
+                        <div style="margin-top: 16px;">
+                            <span style="color: var(--accent-green); font-size: 0.85rem; font-weight: 600;">
+                                Learn More <i class="bi bi-arrow-right"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </a>
                 {% else %}
                 <p style="text-align:center; color:#64748b; padding:30px;">{{ texts.no_capabilities }}</p>
                 {% endfor %}
@@ -204,7 +211,7 @@
                 {% for pf in portfolios %}
                 <a class="portfolio-card" href="{{ pf.link_url or '#' }}" target="_blank">
                     <div class="portfolio-img">
-                        <img src="{{ pf.image_url or url_for('static', filename='images/placeholder.png') }}" alt="{{ pf.title }}" onerror="this.src='https://placehold.co/800x600/0f172a/34d399?text=Project'">
+                        <img src="{{ pf.image_url or url_for('static', filename='images/placeholder.png') }}" alt="{{ pf.title }}" loading="lazy" onerror="this.src='https://placehold.co/800x600/0f172a/34d399?text=Project'">
                     </div>
                     <div class="portfolio-meta">
                         <h3>{{ pf.title }}</h3>
@@ -328,11 +335,22 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // 1. PRELOADER
-            window.addEventListener('load', () => {
-                const preloader = document.getElementById('preloader');
-                setTimeout(() => { preloader.classList.add('loaded'); }, 800);
-            });
+            // 1. PRELOADER - Only on first visit
+            const hasVisited = sessionStorage.getItem('hasVisited');
+            const preloader = document.getElementById('preloader');
+            
+            if (hasVisited) {
+                // Already visited, remove preloader immediately
+                preloader.style.display = 'none';
+            } else {
+                // First visit, show preloader briefly
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        preloader.classList.add('loaded');
+                        sessionStorage.setItem('hasVisited', 'true');
+                    }, 800);
+                });
+            }
 
             // 2. NAVBAR SCROLL
             const navbar = document.querySelector('.navbar-pill');
@@ -411,7 +429,7 @@
                 setTimeout(() => { animateIcon(icon); }, Math.random() * 10000);
             });
 
-            // 4. SCROLL REVEAL
+            // 4. SCROLL REVEAL - Enhanced with better performance
             if ('IntersectionObserver' in window) {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
@@ -420,10 +438,54 @@
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
                 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
             } else {
                 document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+            }
+
+            // 4b. GSAP HERO ANIMATIONS - Split text effect
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                // Animate hero titles with stagger
+                gsap.from('.hero-content h1', {
+                    y: 100,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: 'power4.out',
+                    stagger: 0.2
+                });
+                
+                // Animate hero description
+                gsap.from('.hero-desc', {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1,
+                    delay: 0.6,
+                    ease: 'power3.out'
+                });
+
+                // Parallax effect for aurora lights
+                gsap.to('.light-1', {
+                    y: -50,
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: 1
+                    }
+                });
+                
+                gsap.to('.light-2', {
+                    y: -80,
+                    scrollTrigger: {
+                        trigger: 'body',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: 1.5
+                    }
+                });
             }
 
             // 5. MAGNETIC BUTTONS
