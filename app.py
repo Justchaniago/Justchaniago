@@ -276,22 +276,55 @@ def init_database():
     Visit this route once after deployment to seed capabilities
     """
     try:
-        # Create all tables
+        # Create all tables first
         db.create_all()
         
-        # Check and migrate existing services
-        services = Service.query.all()
-        needs_migration = False
+        # Try to add missing columns to Service table using raw SQL
+        try:
+            with db.engine.connect() as conn:
+                # Check if slug column exists, if not add it
+                conn.execute(db.text("""
+                    DO $$ 
+                    BEGIN 
+                        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                                     WHERE table_name='service' AND column_name='slug') 
+                        THEN 
+                            ALTER TABLE service ADD COLUMN slug VARCHAR(200) UNIQUE;
+                        END IF;
+                    END $$;
+                """))
+                
+                # Check if description column exists, if not add it
+                conn.execute(db.text("""
+                    DO $$ 
+                    BEGIN 
+                        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                                     WHERE table_name='service' AND column_name='description') 
+                        THEN 
+                            ALTER TABLE service ADD COLUMN description TEXT;
+                        END IF;
+                    END $$;
+                """))
+                
+                # Check if details column exists, if not add it
+                conn.execute(db.text("""
+                    DO $$ 
+                    BEGIN 
+                        IF NOT EXISTS (SELECT 1 FROM information_schema.columns 
+                                     WHERE table_name='service' AND column_name='details') 
+                        THEN 
+                            ALTER TABLE service ADD COLUMN details TEXT;
+                        END IF;
+                    END $$;
+                """))
+                conn.commit()
+        except Exception as e:
+            # If ALTER TABLE fails, just continue (might be SQLite in local)
+            pass
         
-        for svc in services:
-            if not hasattr(svc, 'slug') or svc.slug is None:
-                needs_migration = True
-                break
-        
-        if needs_migration:
-            # Delete old services without slug
-            Service.query.delete()
-            db.session.commit()
+        # Now safe to delete old services and add new ones
+        Service.query.delete()
+        db.session.commit()
         
         # Add new services if empty
         if Service.query.count() == 0:
