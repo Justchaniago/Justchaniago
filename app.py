@@ -344,6 +344,36 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+# --- ROUTE UNTUK UPDATE PORTFOLIO DI PRODUCTION ---
+@app.route('/update-portfolio-prod')
+def update_portfolio_prod():
+    try:
+        # Cari portfolio pertama atau yang spesifik
+        portfolio = Portfolio.query.first()
+        
+        if portfolio:
+            # Update dengan data baru
+            portfolio.title = "Senja Coffee E-Commerce"
+            portfolio.category = "Full-Stack Web App"
+            portfolio.image_url = "/static/images/Homepage_coffe_senja.png"
+            portfolio.link_url = "https://senja-coffee-demo.vercel.app"
+            db.session.commit()
+            return f"✅ Portfolio updated successfully!<br>Title: {portfolio.title}<br>Image: {portfolio.image_url}"
+        else:
+            # Kalau belum ada, buat baru
+            new_portfolio = Portfolio(
+                title="Senja Coffee E-Commerce",
+                category="Full-Stack Web App",
+                image_url="/static/images/Homepage_coffe_senja.png",
+                link_url="https://senja-coffee-demo.vercel.app"
+            )
+            db.session.add(new_portfolio)
+            db.session.commit()
+            return "✅ New portfolio created successfully!"
+    except Exception as e:
+        return f"❌ Error updating portfolio: {str(e)}"
+
 # --- ROUTE RAHASIA UNTUK SETUP DB DI VERCEL ---
 @app.route('/init-db')
 def init_db():
