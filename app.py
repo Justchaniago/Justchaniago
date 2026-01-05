@@ -61,6 +61,7 @@ class Service(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     price = db.Column(db.String(50), nullable=True)  # Legacy field, nullable
+    features = db.Column(db.Text, nullable=True)  # Legacy field, nullable
     icon = db.Column(db.String(200), nullable=True)
     slug = db.Column(db.String(200), unique=True, nullable=False)
     description = db.Column(db.Text, nullable=True)
@@ -324,6 +325,16 @@ def init_database():
                     DO $$ 
                     BEGIN 
                         ALTER TABLE service ALTER COLUMN price DROP NOT NULL;
+                    EXCEPTION WHEN OTHERS THEN
+                        NULL;
+                    END $$;
+                """))
+                
+                # Drop NOT NULL constraint from features if exists
+                conn.execute(db.text("""
+                    DO $$ 
+                    BEGIN 
+                        ALTER TABLE service ALTER COLUMN features DROP NOT NULL;
                     EXCEPTION WHEN OTHERS THEN
                         NULL;
                     END $$;
