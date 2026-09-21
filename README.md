@@ -1,5 +1,3 @@
-<div align="center">
-
 # Ferry Rusly Chaniago
 ### AI Engineer & Full-Stack Architect
 
@@ -8,8 +6,6 @@
 ---
 
 [Portfolio](https://chaniago.me) &nbsp;•&nbsp; [LinkedIn](https://linkedin.com) &nbsp;•&nbsp; [Email](mailto:ferryruslyc@gmail.com)
-
-</div>
 
 <br/>
 
@@ -33,16 +29,11 @@ Infrastructure:: PostgreSQL · Cloud Firestore · Docker · GCP · Vercel
 
 <br/>
 
-## ── 📊 Activity & Analytics
+## ── 📊 GitHub Analytics
 
 <div align="center">
 
-<img src="https://github-readme-stats.vercel.app/api?username=Justchaniago&show_icons=true&theme=dark&bg_color=000000&title_color=ffffff&text_color=888888&icon_color=ffffff&border_color=222222&count_private=true" width="48%" />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Justchaniago&theme=dark&background=000000&border=222222&stroke=ffffff&ring=ffffff&fire=ffffff&currStreakNum=ffffff&date_format=M%20j%2C%20Y" width="48%" />
-
-<br/><br/>
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Justchaniago&theme=github-compact&bg_color=000000&color=ffffff&line=ffffff&point=ffffff&area=false&hide_border=true" width="97%" />
+<img src="https://github-readme-stats.vercel.app/api?username=Justchaniago&show_icons=true&theme=dark&bg_color=000000&title_color=ffffff&text_color=a0a0a0&icon_color=ffffff&border_color=222222&count_private=true" alt="GitHub Stats" width="80%" />
 
 </div>
 
