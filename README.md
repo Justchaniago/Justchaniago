@@ -29,13 +29,14 @@ Infrastructure:: PostgreSQL · Cloud Firestore · Docker · GCP · Vercel
 
 <br/>
 
-## ── 📊 GitHub Analytics
+## ── 🎯 Active Systems & Agents
 
-<div align="center">
-
-<img src="https://github-readme-stats.vercel.app/api?username=Justchaniago&show_icons=true&theme=dark&bg_color=000000&title_color=ffffff&text_color=a0a0a0&icon_color=ffffff&border_color=222222&count_private=true" alt="GitHub Stats" width="80%" />
-
-</div>
+- **`gongcha-workspace`** :: Monorepo for Gong Cha Mobile App, FastAPI Backend & Admin Dashboard.
+- **`Neo-AVO`** :: Operational Control Center, telemetry ingestion, & incident management.
+- **`Tele_bot`** :: Telegram ingestion service for automated daily sales, waste, & production reports.
+- **`QRA-System`** :: Quinos POS review agent & reconciliation engine.
+- **`Breafing-agent`** :: Deterministic daily briefing generator service.
+- **`auto-email-project`** :: Automated Gmail operational report generator.
 
 <br/>
 
